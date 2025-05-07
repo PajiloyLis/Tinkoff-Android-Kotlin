@@ -39,6 +39,5 @@ fun main() {
  * Метод поиска опытного учителя из списка
  */
 private fun getExperiencedTeacher(experience: Int, teacherList: List<Teacher>): List<String> {
-    val mapped = teacherList.map { teacher -> teacher.name to teacher.progExperience }
     return teacherList.filter { teacher: Teacher ->  teacher.progExperience>experience}.map{it.name}
 }
