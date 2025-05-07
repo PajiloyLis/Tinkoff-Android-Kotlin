@@ -1,0 +1,1 @@
+data class Language(val name: String)
