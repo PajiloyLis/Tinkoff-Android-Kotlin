@@ -1,5 +1,6 @@
 *.iml
 .gradle
+.idea
 /local.properties
 /.idea/caches
 /.idea/libraries
@@ -13,7 +14,7 @@
 .externalNativeBuild
 .cxx
 local.properties
-/.idea/
-/android_kotlin_class_homework/.idea/
-/blablabla/
-/out/
+
+# Project exclude paths
+#/app/
+#/gradle/
