@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">example_jetpack_navigation</string>
+    <string name="navigate">navigate</string>
+</resources>
