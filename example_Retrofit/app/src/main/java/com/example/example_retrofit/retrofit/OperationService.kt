@@ -8,5 +8,5 @@ import retrofit2.http.Path
 interface IOperationService {
 
     @GET("android_for_beginners_back_end/main/{user}.json")
-    suspend fun getOperations(@Path("user") user: String) : Call<Operations>
+    fun getOperations(@Path("user") user: String) : Call<Operations>
 }
