@@ -8,18 +8,15 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
-    private val flow: Flow<String> = flow {
-        delay(1000)
-        emit("Hello")
-        delay(1000)
-        emit("kotlin")
-        delay(1000)
-        emit("flows")
+    private val flow: Flow<Int> = flow {
+        for(i in 0 .. 100) emit(i)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,9 +25,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         lifecycleScope.launch{
-            flow.collectLatest{data ->
-                delay(1000)
-                Log.d("TAG", data)}
+            flow
+                .filter { it -> it%2 == 0 }
+                .map { "Number $it" }
+                .collectLatest{data ->
+                Log.d("TAG", "$data")}
         }
 
     }
