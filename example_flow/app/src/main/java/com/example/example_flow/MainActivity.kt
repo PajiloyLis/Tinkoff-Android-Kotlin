@@ -9,6 +9,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -28,6 +29,10 @@ class MainActivity : AppCompatActivity() {
             flow
                 .filter { it -> it%2 == 0 }
                 .map { "Number $it" }
+                .flatMapConcat { value -> flow {
+                    emit("$value flatmaped")
+                    emit(value)
+                } }
                 .collectLatest{data ->
                 Log.d("TAG", "$data")}
         }
