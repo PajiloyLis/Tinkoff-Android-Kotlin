@@ -12,6 +12,7 @@ import android.util.Log
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlin.math.log
 import kotlin.system.measureTimeMillis
 
@@ -23,16 +24,12 @@ class MainActivity : AppCompatActivity() {
 
         CoroutineScope(Dispatchers.IO + CoroutineName("KEK")).launch {
             val time = measureTimeMillis {
-                var answerOne : String? = null
-                var answerTwo: String? = null
-                val valOne = launch{ answerOne = callOne() }
-                val valTwo = launch{ answerTwo = callTwo() }
-                valOne.join()
-                valTwo.join()
-                Log.d("TAG", answerOne ?: "nothing")
-                Log.d("TAG", answerTwo?: "nothing")
+                val valOne = async{callOne() }
+                val valTwo = async{ callTwo() }
+                Log.d("TAG", valOne.await())
+                Log.d("TAG", valTwo.await())
             }
-            Log.d("TAG", "Time ${time}")
+            Log.d("TAG", "Time $time")
         }
     }
 
