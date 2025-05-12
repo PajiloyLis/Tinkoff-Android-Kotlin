@@ -23,10 +23,14 @@ class MainActivity : AppCompatActivity() {
 
         CoroutineScope(Dispatchers.IO + CoroutineName("KEK")).launch {
             val time = measureTimeMillis {
-                val valOne = callOne()
-                val valTwo = callTwo()
-                Log.d("TAG", valOne)
-                Log.d("TAG", valTwo)
+                var answerOne : String? = null
+                var answerTwo: String? = null
+                val valOne = launch{ answerOne = callOne() }
+                val valTwo = launch{ answerTwo = callTwo() }
+                valOne.join()
+                valTwo.join()
+                Log.d("TAG", answerOne ?: "nothing")
+                Log.d("TAG", answerTwo?: "nothing")
             }
             Log.d("TAG", "Time ${time}")
         }
