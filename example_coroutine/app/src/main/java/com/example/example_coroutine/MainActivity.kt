@@ -13,6 +13,7 @@ import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.supervisorScope
 import kotlin.math.log
 import kotlin.system.measureTimeMillis
 
@@ -23,22 +24,31 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         CoroutineScope(Dispatchers.IO + CoroutineName("KEK")).launch {
-            val time = measureTimeMillis {
-                val valOne = async{callOne() }
-                val valTwo = async{ callTwo() }
-                Log.d("TAG", valOne.await())
-                Log.d("TAG", valTwo.await())
+            supervisorScope {
+                val time = measureTimeMillis {
+                    val valOne = launch {
+                        throw RuntimeException()
+                        callOne()
+                        Log.d("TAG", "one")
+                    }
+                    val valTwo = launch {
+                        callTwo()
+                        Log.d("TAG", "two")
+                    }
+                    valOne.cancel()
+                    valTwo.join()
+                }
+                Log.d("TAG", "Time $time")
             }
-            Log.d("TAG", "Time $time")
         }
     }
 
-    private suspend fun callOne(): String{
+    private suspend fun callOne(): String {
         delay(1000)
         return "callOne"
     }
 
-    private suspend fun callTwo(): String{
+    private suspend fun callTwo(): String {
         delay(3000)
         return "callTwo"
     }
